@@ -8,7 +8,7 @@ from metrics import NSDSpanBasedF1Measure
 def confidence(features: np.ndarray,
                means: np.ndarray,
                distance_type: str,
-               cov: np.ndarray = None) -> np.ndarray: 
+               cov: np.ndarray = None) -> np.ndarray:
     """
     Calculate mahalanobis or euclidean based confidence score for each class.
 
@@ -40,14 +40,14 @@ def confidence(features: np.ndarray,
 
 def parse_line(line:List): # [for Spanf1]
     """
-    Given the predicted sequence (contain "ns"), return the parsed BIO sequence (contain "B-ns" and "I-ns"). 
+    Given the predicted sequence (contain "ns"), return the parsed BIO sequence (contain "B-ns" and "I-ns").
     And due to the override, IND tags may be discordant, so we need to adjust the IND tags after been override.
     e.g.
-        Input : ns ns ns O B-playlist_owner B-playlist ns I-playlist O 
-        Return : B-ns I-ns I-ns O B-playlist_owner B-playlist B-ns B-playlist O 
+        Input : ns ns ns O B-playlist_owner B-playlist ns I-playlist O
+        Return : B-ns I-ns I-ns O B-playlist_owner B-playlist B-ns B-playlist O
 
     Params:
-        - line(list),the prediced sequence (contain "ns"). 
+        - line(list),the prediced sequence (contain "ns").
 
     Returns:
         - adjust_line(list), the parsed BIO sequence(contain "B-ns" and "I-ns")
@@ -74,13 +74,13 @@ def parse_line(line:List): # [for Spanf1]
 
 def parse_token(line:List): # [for tokenf1]
     """
-    Given the predicted sequence (contain "ns" or "B-ns", "I-ns"), return the parsed BIO sequence (only contain "B-ns"). 
+    Given the predicted sequence (contain "ns" or "B-ns", "I-ns"), return the parsed BIO sequence (only contain "B-ns").
     e.g.
-        Input : ns ns ns O B-playlist_owner B-playlist I-playlist O 
-        Return : B-ns B-ns B-ns O B-playlist_owner B-playlist I-playlist O 
+        Input : ns ns ns O B-playlist_owner B-playlist I-playlist O
+        Return : B-ns B-ns B-ns O B-playlist_owner B-playlist I-playlist O
 
     Params:
-        - line(list),the prediced sequence (contain "ns" or "B-ns", "I-ns"). 
+        - line(list),the prediced sequence (contain "ns" or "B-ns", "I-ns").
 
     Returns:
         - adjust_line(list), the parsed BIO sequence (contain "B-ns")
@@ -119,7 +119,7 @@ def token_metric(true:list,predict:list):
 
     print(f"=====> Token(Experiment) <=====")
     print(f"NSD:  f:{f_nsd}, p:{p_nsd}, r:{r_nsd}\n")
-    
+
 # ADDED VG
 def span_metric(true:list,predict:list):
     """
@@ -131,7 +131,7 @@ def span_metric(true:list,predict:list):
                         nsd_slots=["ns"]
                         )
 
-    spanf1(pd.Series([true]),pd.Series([predict]),False)
+    spanf1(pd.Series(true),pd.Series(predict),False)
     span_metrics = spanf1.get_metric(reset=True)
     f_nsd = span_metrics["f1-nsd"]
     r_nsd = span_metrics["recall-nsd"]
@@ -151,21 +151,21 @@ def rose_metric(test_true_lines:list,test_pred_lines:list):
     To meet a reasonable NSD scenario, we propose a new metric, restriction-oriented span evaluation(ROSE).
     We consider a span is correct:
         - When the tokens prediction exceeds the span.
-        - When the number of correctly predicted tokens is greater than a settable proportion p of the span length. 
+        - When the number of correctly predicted tokens is greater than a settable proportion p of the span length.
 
     Params:
         - test_true_lines, (seq_dim,token_dim) contation BIO tags.
         - test_pred_lines, (seq_dim,token_dim) contation BIO tags.
 
     Returns:
-        - 
+        -
     """
     spanf1 = NSDSpanBasedF1Measure(tag_namespace="labels",
                         ignore_classes=[],
                         label_encoding="BIO",
                         nsd_slots=["ns"]
                     )
-    
+
     spanf1(pd.Series(test_true_lines),pd.Series(test_pred_lines),True,0.25)
     nsd_metrics_25 = spanf1.get_metric(reset=True)
     spanf1(pd.Series(test_true_lines),pd.Series(test_pred_lines),True,0.5)
