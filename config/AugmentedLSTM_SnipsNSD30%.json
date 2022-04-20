@@ -23,11 +23,9 @@
             "top_layer_only": false
         },
         "encoder": {
-            "type": "lstm",
+            "type": "augmented_lstm",
             "input_size": 1024,
-            "hidden_size": 128,
-            "bidirectional": true,
-            "batch_first": true
+            "hidden_size": 128
         },
         "use_crf": true,
         "dropout": 0.5

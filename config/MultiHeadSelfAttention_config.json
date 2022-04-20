@@ -23,11 +23,11 @@
             "top_layer_only": false
         },
         "encoder": {
-            "type": "lstm",
-            "input_size": 1024,
-            "hidden_size": 128,
-            "bidirectional": true,
-            "batch_first": true
+            "type": "multi_head_self_attention",
+            "num_heads": 2,
+            "input_dim": 1024,
+            "attention_dim": 128,
+            "values_dim": 128
         },
         "use_crf": true,
         "dropout": 0.5
