@@ -6,14 +6,15 @@
     "validation_data_path": "./data/SnipsNSD15%/valid",
     "test_data_path": "./data/SnipsNSD15%/test",
     "dataset_reader": {
-        "type": "multi",
+        "type": "multi_file",
         "token_indexers": {
             "tokens": {
                 "type": "single_id",
                 "lowercase_tokens": true
             },
             "token_characters": {
-                "type": "characters"
+                "type": "characters",
+                "min_padding_length": 768
             },
             "openai_transformer": {
                 "type": "openai_transformer_byte_pair",
@@ -22,7 +23,7 @@
         }
     },
     "model": {
-        "type": "g",
+        "type": "openai_st",
         "openai_embedder":{
             "transformer": {
                 "model_path": "https://s3-us-west-2.amazonaws.com/allennlp/models/openai-transformer-lm-2018.07.23.tar.gz"
