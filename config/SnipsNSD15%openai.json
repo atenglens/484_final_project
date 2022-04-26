@@ -14,7 +14,7 @@
             },
             "token_characters": {
                 "type": "characters",
-                "min_padding_length": 768
+                "min_padding_length": 128
             },
             "openai_transformer": {
                 "type": "openai_transformer_byte_pair",
@@ -41,7 +41,7 @@
     },
     "iterator": {
         "type": "bucket",
-        "batch_size": 64,
+        "batch_size": 164,
         "sorting_keys": [
             [
                 "sentence",
