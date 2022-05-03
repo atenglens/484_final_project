@@ -3,7 +3,7 @@ from allennlp.models.archival import load_archive
 from allennlp.predictors import Predictor
 from allennlp.common import Params
 from allennlp.data import Vocabulary
-from allennlp.data import DataIterator#
+from allennlp.data import DataIterator
 from allennlp.data.dataset_readers import DatasetReader
 from allennlp.models import Model
 from allennlp.training import Trainer
@@ -74,7 +74,7 @@ def SlotTrain(config_path,output_dir):
 
     iterator = DataIterator.from_params(params.pop("iterator", None))
     iterator.index_with(vocab)
-    
+
     trainer_params = params.pop("trainer", None)
     trainer = Trainer.from_params(model=model,
                                 serialization_dir=output_dir,
@@ -131,7 +131,7 @@ if args.mode in ["train","both"]:
 
     iterator = DataIterator.from_params(params.pop("iterator", None))
     iterator.index_with(vocab)
-    
+
     trainer_params = params.pop("trainer", None)
     trainer = Trainer.from_params(model=model,
                                 serialization_dir=output_dir,
@@ -171,7 +171,7 @@ if args.mode in ["test","both"]:
     # GDA
     gda = LinearDiscriminantAnalysis(solver="lsqr", shrinkage=None, store_covariance=True)
     gda.fit(np.array(train_outputs["encoder_outs"]), train_outputs["true_labels"])
-    gda_means = gda.means_ 
+    gda_means = gda.means_
 
     test_gda_result = confidence(np.array(test_outputs["encoder_outs"]), gda.means_, "euclidean", gda.covariance_)
     test_score = pd.Series(test_gda_result.min(axis=1))
@@ -182,7 +182,7 @@ if args.mode in ["test","both"]:
 
     # threshold
     threshold = args.threshold
-    
+
     # override
     test_y_ns = pd.Series(test_outputs["predict_labels"])
     test_y_ns[test_score[test_score> threshold].index] = "ns"
@@ -207,11 +207,6 @@ if args.mode in ["test","both"]:
     test_pred_tokens = parse_token(test_y_ns)
     test_true_tokens = parse_token(test_outputs["true_labels"])
     token_metric(test_true_tokens,test_pred_tokens)
-    
+
     # Metrics -- Span  ADDED VG
     span_metric(test_true_lines,test_pred_lines)
-
-    
-
-
-    

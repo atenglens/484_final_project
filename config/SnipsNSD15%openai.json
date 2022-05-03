@@ -14,7 +14,7 @@
             },
             "token_characters": {
                 "type": "characters",
-                "min_padding_length": 128
+                "min_padding_length": 768
             },
             "openai_transformer": {
                 "type": "openai_transformer_byte_pair",
@@ -32,7 +32,7 @@
         "encoder": {
             "type": "lstm",
             "input_size": 768,
-            "hidden_size": 128,
+            "hidden_size": 64,
             "bidirectional": true,
             "batch_first": true
         },
